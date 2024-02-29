@@ -74,13 +74,30 @@ transect <- read_delim("data_raw/export_csv_data-20240220142639/TRANSECT.csv",
 str(transect)
 
 
-# sélection des transects correspondants aux opé les plus récentes
-transect_recent <- transect %>% 
-  left_join(y=ope_recent %>% 
-              select)
+# Comparaison des lpbev et largeur pb moyennes effectives
+transect2<- transect %>% 
+  dplyr::mutate(TRA_LPB=ifelse(TRA_LPB<=0,
+                                NA,
+                                TRA_LPB)) %>% 
+  dplyr::group_by(TRA_OPE_ID) %>% 
+  summarise(lpb_vraie_ev=mean(TRA_LPB,na.rm=TRUE))
+  
+transect2<-rename(transect2,OPE_ID=TRA_OPE_ID)
 
+#rappatriement de la colonne dans tableau operation
+ope_recent2<-ope_recent %>% 
+  left_join(y=transect2)
 
-
+graphique3 <-ggplot(data=ope_recent2)+
+      aes(x=OPE_LPBEV,y=lpb_vraie_ev)+
+      geom_point()+
+      geom_smooth(method = "lm", se=FALSE)+ 
+      theme_grey()+
+      labs (title = "Comparaison de la moyenne des largeurs plein bord avec la largeur plein bord évaluée",
+          x = "Largeur plein bord évaluée (m)",
+          y = "Largeur plein bord moyenne par station (en m)")+
+      theme(legend.position = "none")
+graphique3
 
 
 
