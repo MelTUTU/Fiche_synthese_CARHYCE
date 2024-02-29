@@ -5,6 +5,9 @@ list.files("./data_raw/export_csv_data-20240220142639")
 
 library(readr)
 library(tidyverse)
+install.packages("lubridate")
+library("lubridate")
+
 
 operation <- read_delim("data_raw/export_csv_data-20240220142639/OPERATION.csv", 
                         delim = ";", escape_double = FALSE, col_types = cols(OPE_DEBIT_MESURE = col_number(), 
@@ -25,12 +28,22 @@ pvmt <- read_delim("data_raw/export_csv_data-20240220142639/POINT_PRELEVEMENT.cs
                    na=c("null",""))
 str(pvmt)
 
-#croisement pour récupérer code sandre
+#croisement pour rapatrier code sandre dans tableau de travail et récupérer date
 
 ope_croise <- operation %>% 
-  select(PPR_ID,OPE_ID,OPE_LPBEV:OPE_PENTE_LIGNE_EAU) %>% 
+  select(PPR_ID,OPE_ID,OPE_DATE_REALISATION,OPE_LPBEV:OPE_PENTE_LIGNE_EAU) %>% 
   left_join(y=pvmt %>% 
-              select(PPR_ID,PPR_EST_SANDRE))
+              select(PPR_ID,SME_CD_STATION_MESURE_EAUX_SURFACE)) %>% 
+  mutate(annee=dmy(OPE_DATE_REALISATION),
+         annee=year(annee))
+
+# par station,selectionner code opération le plus récent
+ope_recent <-ope_croise %>% 
+  dplyr::group_by(SME_CD_STATION_MESURE_EAUX_SURFACE) %>% 
+  filter(last(annee))
+
+
+
 
 
 
