@@ -58,11 +58,11 @@ ope_recent <-ope_croise2 %>%
   filter(annee==max(annee))
 
 #renommer colonne (pour le fun!)
-nom<-colnames(ope_recent)
-nouveau_nom<-nom %>% 
-  str_replace_all(pattern = "\\(", replacement="") %>% # pas utile dans ce contexte mais c'est pour avoir la fonction ;)
-  str_to_lower()
-colnames(ope_recent)<-nouveau_nom
+# nom<-colnames(ope_recent)
+# nouveau_nom<-nom %>% 
+#   str_replace_all(pattern = "\\(", replacement="") %>% # pas utile dans ce contexte mais c'est pour avoir la fonction ;)
+#   str_to_lower()
+# colnames(ope_recent)<-nouveau_nom
 
 
 #chargement de la table transect
@@ -72,9 +72,6 @@ transect <- read_delim("data_raw/export_csv_data-20240220142639/TRANSECT.csv",
                        locale = locale(encoding = "WINDOWS-1252"), 
                        na = "empty", trim_ws = TRUE)
 str(transect)
-
-
-
 
 
 # sélection des transects correspondants aux opé les plus récentes
