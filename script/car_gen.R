@@ -8,6 +8,8 @@ library(tidyverse)
 # install.packages("lubridate")
 library("lubridate")
 
+# devtools::install_github("maeltheuliere/COGiter")
+
 
 operation <- read_delim("data_raw/export_csv_data-20240220142639/OPERATION.csv", 
                         delim = ";", escape_double = FALSE, col_types = cols(OPE_DEBIT_MESURE = col_number(), 
@@ -95,12 +97,39 @@ nb_ope<-ope_recent2 %>%
  count() %>% 
   ungroup()
 
+nb_ope_dpt<-ope_recent2 %>% 
+  dplyr::group_by(annee,SME_CD_DEPARTEMENT) %>% 
+  count() %>% 
+  ungroup()
+
 # info à la station
 ma_station <-ope_recent2 %>% 
   filter (OPE_ID=="817")
 
+
+#représenter nombre opération par département
+fichier_coord<-station_mesure %>% 
+  sf::st_as_sf(coords=c("SME_COORD_X_STATION_MESURE_EAUX_SURFACE","SME_COORD_Y_STATION_MESURE_EAUX_SURFACE"),
+               crs = 2154)
   
+mapview::mapview(fichier_coord)
+
+#carto dpt
+dpt_occitan<-COGiter::departements_metro_geo %>% 
+  filter(DEP%in%c("09","11","12","30","31","32","34","46","48","65","66","81","82")) %>% 
   
+mapview::mapview(dpt_occitan)
+
+
+dpt_occitan_mod<-dpt_occitan %>% 
+  left_join(y=nb_ope_dpt,
+            by=join_by(DEP==SME_CD_DEPARTEMENT))
+
+nb_ope_tot_geo <-dpt_occitan_mod %>%
+  group_by(DEP) %>% 
+  summarise(nb_tot=sum(n)) %>%
+  ungroup()
+mapview::mapview((nb_ope_tot_geo))
 
 
 

@@ -2,7 +2,12 @@
 title: "test rapport_bac à sable"
 author: "Mélanie"
 date: "2024-03-01"
-output: rmdformats::readthedown
+output: 
+  html_document:
+    toc: TRUE
+    toc_depth: 3
+    toc_float: TRUE
+
 ---
 
 ```{r setup, include=FALSE}

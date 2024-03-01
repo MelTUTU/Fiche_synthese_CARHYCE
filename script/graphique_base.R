@@ -52,7 +52,9 @@ graphique3 <-ggplot(data=ope_recent2)+
   theme(legend.position = "bottom")
 
 
-save(graphique3,transect2,nb_ope,ma_station,file="output/testgraphique.Rdata")
+# Nombre d'opération par an et par département
+graphique4<- ggplot (data=nb_ope_dpt)+
+  aes(x=)
 
 
 # scale_fill_manual (values = wes_palette("GrandBudapest1",n=13))
