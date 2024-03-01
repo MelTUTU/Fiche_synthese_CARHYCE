@@ -52,6 +52,7 @@ graphique3 <-ggplot(data=ope_recent2)+
   theme(legend.position = "bottom")
 
 
+save(graphique3,transect2,nb_ope,ma_station,file="output/testgraphique.Rdata")
 
 
 # scale_fill_manual (values = wes_palette("GrandBudapest1",n=13))

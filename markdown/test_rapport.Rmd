@@ -1,0 +1,49 @@
+---
+title: "test rapport_bac à sable"
+author: "Mélanie"
+date: "2024-03-01"
+output: rmdformats::readthedown
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## CARACTERISTIQUES STATIONS
+
+BLBALBLBLBLBLA
+
+
+## QUELQUES GRAPHIQUES
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(pressure)
+```
+```{r, echo = FALSE}
+load(file="../output/testgraphique.Rdata")
+```
+```{r}
+plot(graphique3)
+```
+```{r stat tableau transect, echo=FALSE}
+summary(transect2)
+```
+```{r,echo = FALSE}
+knitr::kable(nb_ope,
+             caption="nombre d'opération par an")
+```
+```{r}
+flextable::flextable(nb_ope)
+```
+```{r,echo=FALSE}
+nom_station<-ma_station$SME_LB_STATION_MESURE_EAUX_SURFACE
+```
+Nom de la station: `r nom_station`
+
+
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

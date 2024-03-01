@@ -5,7 +5,7 @@ list.files("./data_raw/export_csv_data-20240220142639")
 
 library(readr)
 library(tidyverse)
-install.packages("lubridate")
+# install.packages("lubridate")
 library("lubridate")
 
 
@@ -87,17 +87,21 @@ transect2<-rename(transect2,OPE_ID=TRA_OPE_ID)
 #rappatriement de la colonne dans tableau operation
 ope_recent2<-ope_recent %>% 
   left_join(y=transect2)
+summary(transect2)
 
-graphique3 <-ggplot(data=ope_recent2)+
-      aes(x=OPE_LPBEV,y=lpb_vraie_ev)+
-      geom_point()+
-      geom_smooth(method = "lm", se=FALSE)+ 
-      theme_grey()+
-      labs (title = "Comparaison de la moyenne des largeurs plein bord avec la largeur plein bord évaluée",
-          x = "Largeur plein bord évaluée (m)",
-          y = "Largeur plein bord moyenne par station (en m)")+
-      theme(legend.position = "none")
-graphique3
+# Calcul du nomdre d'opération par département et par 
+nb_ope<-ope_recent2 %>% 
+  dplyr::group_by(annee) %>% 
+ count() %>% 
+  ungroup()
+
+# info à la station
+ma_station <-ope_recent2 %>% 
+  filter (OPE_ID=="817")
+
+  
+  
+
 
 
 
