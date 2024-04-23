@@ -1,4 +1,5 @@
 # CARACTERISTIQUES GENERALES
+# test communication github,j'essaye 
 
 # chargement de la table opération
 list.files("./data_raw/export_csv_data-20240220142639")
