@@ -117,7 +117,7 @@ mapview::mapview(fichier_coord)
 #charger le package qui va bien ATTENTION, NE FONCTIONNE PAS
 devtools::install_github("maeltheuliere/COGiter")
 
-#carto dpt ATTENTION, NE FONCTIONNE PAS
+#carto dpt ATTENTION, NE FONCTIONNE
 dpt_occitan<-COGiter::departements_metro_geo %>% 
   filter(DEP%in%c("09","11","12","30","31","32","34","46","48","65","66","81","82")) %>% 
   
