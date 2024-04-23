@@ -1,5 +1,4 @@
 # CARACTERISTIQUES GENERALES
-# test communication github,j'essaye 
 
 # chargement de la table opération
 list.files("./data_raw/export_csv_data-20240220142639")
@@ -9,7 +8,7 @@ library(tidyverse)
 # install.packages("lubridate")
 library("lubridate")
 
-# devtools::install_github("maeltheuliere/COGiter")
+
 
 
 operation <- read_delim("data_raw/export_csv_data-20240220142639/OPERATION.csv", 
@@ -115,12 +114,14 @@ fichier_coord<-station_mesure %>%
   
 mapview::mapview(fichier_coord)
 
-#carto dpt
+#charger le package qui va bien ATTENTION, NE FONCTIONNE PAS
+devtools::install_github("maeltheuliere/COGiter")
+
+#carto dpt ATTENTION, NE FONCTIONNE PAS
 dpt_occitan<-COGiter::departements_metro_geo %>% 
   filter(DEP%in%c("09","11","12","30","31","32","34","46","48","65","66","81","82")) %>% 
   
 mapview::mapview(dpt_occitan)
-
 
 dpt_occitan_mod<-dpt_occitan %>% 
   left_join(y=nb_ope_dpt,
