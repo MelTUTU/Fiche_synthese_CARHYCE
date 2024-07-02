@@ -1,8 +1,12 @@
-# à lancer après car_gen
+# REALISATION DE GRAPHIQUES
+
+# ATTENTION : faire tourner script car_gen au préalable
+
+# charger les librairies utiles
 library(ggplot2)
 library(wesanderson) # palette de couleurs sympa
 
-# boxplot des largeur à plein bord en fontion des départements
+# boxplot des largeurs à plein bord en fontion des départements
 graphique1<-
   ggplot(data=ope_recent)+
   aes(x=SME_CD_DEPARTEMENT,
