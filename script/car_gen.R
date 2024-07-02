@@ -1,19 +1,8 @@
 # ANALYSES DE DONNEES
 
-# faire tourner script import_donnees au préalable
+# ATTENTION : faire tourner script import_donnees au préalable
 
-
-
-#renommer colonne (pour le fun!)
-# nom<-colnames(ope_recent)
-# nouveau_nom<-nom %>% 
-#   str_replace_all(pattern = "\\(", replacement="") %>% # pas utile dans ce contexte mais c'est pour avoir la fonction ;)
-#   str_to_lower()
-# colnames(ope_recent)<-nouveau_nom
-
-
-
-# Comparaison des lpbev et largeur pb moyennes effectives
+#comparaison des lpbev et largeur pb moyennes effectives
 transect2<- transect %>% 
   dplyr::mutate(TRA_LPB=ifelse(TRA_LPB<=0,
                                 NA,
@@ -39,9 +28,6 @@ nb_ope_dpt<-ope_recent2 %>%
   count() %>% 
   ungroup()
 
-# info à la station
-ma_station <-ope_recent2 %>% 
-  filter (OPE_ID=="817")
 
 
 #représenter nombre opération par département

@@ -1,4 +1,4 @@
-# PREPARATION DU TRAVAIL
+# PREPARATION DES TABLEAUX DE TRAVAIL
 
 # définition du répertoire de travail
 list.files("./data_raw/export_csv_data-20240220142639")
@@ -44,15 +44,16 @@ transect <- read_delim("data_raw/export_csv_data-20240220142639/TRANSECT.csv",
                        na = "empty", trim_ws = TRUE)
 str(transect)
 
+
+
 #table POINT
 point <- read_delim("data_raw/export_csv_data-20240220142639/POINT.csv", 
                     delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
 str(point)
 
-point2<-point %>% 
-  select(POI_EN_EAU) %>% 
-  str_trunc(POI_EN_EAU,3,"right")
+point2<-point %>%
+  mutate (POI_EN_EAU= gsub(x=POI_EN_EAU,pattern='";"',replacement=''))
 
 
 ##Croisement entre tables
@@ -73,3 +74,9 @@ ope_recent <-ope_croise %>%
   dplyr::group_by(SME_CD_STATION_MESURE_EAUX_SURFACE) %>% 
   filter(annee==max(annee))
 
+#renommer colonne (pour le fun!)
+# nom<-colnames(ope_recent)
+# nouveau_nom<-nom %>% 
+#   str_replace_all(pattern = "\\(", replacement="") %>% # pas utile dans ce contexte mais c'est pour avoir la fonction ;)
+#   str_to_lower()
+# colnames(ope_recent)<-nouveau_nom
