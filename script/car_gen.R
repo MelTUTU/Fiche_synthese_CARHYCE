@@ -1,16 +1,18 @@
-# CARACTERISTIQUES GENERALES
+# PREPARATION DU TRAVAIL
 
-# chargement de la table opération
+# définition du répertoire de travail
 list.files("./data_raw/export_csv_data-20240220142639")
 
+# charger les librairies utiles
 library(readr)
 library(tidyverse)
 # install.packages("lubridate")
 library("lubridate")
+#install.packages("stringr")
+library(stringr)
 
-
-
-
+# chargement des principales tables de travail issues de l'export CARHYCE
+# table OPERATION
 operation <- read_delim("data_raw/export_csv_data-20240220142639/OPERATION.csv", 
                         delim = ";", escape_double = FALSE, col_types = cols(OPE_DEBIT_MESURE = col_number(), 
                                                                              OPE_DEBIT_STATION_HYDRO = col_number(), 
@@ -23,23 +25,37 @@ operation <- read_delim("data_raw/export_csv_data-20240220142639/OPERATION.csv",
 
 str(operation)
 
-
-#chargement de la table pour récupérer les codes dpt
+#table STATION DE MESURE
 station_mesure <- read_delim("data_raw/export_csv_data-20240220142639/STATION_MESURE.csv", 
                              delim = ";", escape_double = FALSE, locale = locale(encoding = "WINDOWS-1252"), 
                              trim_ws = TRUE)
 str(station_mesure)
 
-
-#chargement de la table point de pvmt pour récupérer le code departement
-
+#table POINT DE PRELEVEMENT
 pvmt <- read_delim("data_raw/export_csv_data-20240220142639/POINT_PRELEVEMENT.csv",
                    na=c("null",""))
 str(pvmt)
 
+#table TRANSECT
+transect <- read_delim("data_raw/export_csv_data-20240220142639/TRANSECT.csv", 
+                       delim = ";", escape_double = FALSE, col_types = cols(TRA_LPB = col_number(), 
+                                                                            TRA_L_MOUILLEE = col_number(), TRA_HPB = col_number()), 
+                       locale = locale(encoding = "WINDOWS-1252"), 
+                       na = "empty", trim_ws = TRUE)
+str(transect)
+
+#table POINT
+point <- read_delim("data_raw/export_csv_data-20240220142639/POINT.csv", 
+                    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+str(point)
+
+point2<-point %>% 
+  select(POI_EN_EAU)
+  str_trunc(POI_EN_EAU,3,"right")
 
 
-#croisement pour rapatrier code sandre dans tableau de travail et récupérer date
+#croisement pour rapatrier code sandre dans le tableau de travail et récupérer date
 
 ope_croise <- operation %>% 
   select(PPR_ID,OPE_ID,OPE_DATE_REALISATION,OPE_LPBEV:OPE_PENTE_LIGNE_EAU) %>% 
@@ -67,13 +83,7 @@ ope_recent <-ope_croise2 %>%
 # colnames(ope_recent)<-nouveau_nom
 
 
-#chargement de la table transect
-transect <- read_delim("data_raw/export_csv_data-20240220142639/TRANSECT.csv", 
-                       delim = ";", escape_double = FALSE, col_types = cols(TRA_LPB = col_number(), 
-                                                                            TRA_L_MOUILLEE = col_number(), TRA_HPB = col_number()), 
-                       locale = locale(encoding = "WINDOWS-1252"), 
-                       na = "empty", trim_ws = TRUE)
-str(transect)
+
 
 
 # Comparaison des lpbev et largeur pb moyennes effectives
@@ -117,7 +127,7 @@ mapview::mapview(fichier_coord)
 #charger le package qui va bien ATTENTION, NE FONCTIONNE PAS
 devtools::install_github("maeltheuliere/COGiter")
 
-#carto dpt ATTENTION, NE FONCTIONNE
+#carto dpt ATTENTION, NE FONCTIONNE PAS
 dpt_occitan<-COGiter::departements_metro_geo %>% 
   filter(DEP%in%c("09","11","12","30","31","32","34","46","48","65","66","81","82")) %>% 
   
