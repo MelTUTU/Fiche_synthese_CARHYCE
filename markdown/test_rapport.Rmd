@@ -1,20 +1,49 @@
 ---
-title: "test rapport_bac à sable"
-author: "Mélanie"
-date: "2024-03-01"
+title: "Fiche de synthèse des données CARHYCE sur la station `r params$station`"
+author: "OFB DR Occitanie"
+date: "`r Sys.Date()`"
 output: 
   html_document:
     toc: TRUE
     toc_depth: 3
     toc_float: TRUE
-
+params:
+  station: '05061942'
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## CARACTERISTIQUES STATIONS
+```{r, echo = FALSE}
+load(file="../output/testgraphique.Rdata")
+```
+
+## LA STATION
+```{r,echo=FALSE}
+nom_station<-ma_station$SME_LB_STATION_MESURE_EAUX_SURFACE
+code_station<-ma_station$SME_CD_STATION_MESURE_EAUX_SURFACE
+departement_station<-ma_station$SME_CD_DEPARTEMENT
+```
+**Nom** : `r nom_station`  
+**Code SANDRE** : `r code_station`  
+**Département** : `r departement_station`  
+**HER** :   
+**Réseau** :   
+Photo : comment la récupérer ?  
+Vue aérienne : *idem*    
+
+
+## L'OPERATION
+```{r,echo=FALSE}
+date_operation<-ma_station$OPE_DATE_REALISATION
+id_operation<-ma_station$OPE_ID
+longueur_ope<-ma_station$OPE_LR
+```
+**Date** : `r date_operation`  
+**Identifiant opération** : `r id_operation`  
+**Longueur station (m)** : `r longueur_ope`  
+
 
 BLBALBLBLBLBLA
 
@@ -26,9 +55,7 @@ You can also embed plots, for example:
 ```{r, echo=FALSE}
 plot(pressure)
 ```
-```{r, echo = FALSE}
-load(file="../output/testgraphique.Rdata")
-```
+
 ```{r}
 plot(graphique3)
 ```
@@ -42,10 +69,6 @@ knitr::kable(nb_ope,
 ```{r}
 flextable::flextable(nb_ope)
 ```
-```{r,echo=FALSE}
-nom_station<-ma_station$SME_LB_STATION_MESURE_EAUX_SURFACE
-```
-Nom de la station: `r nom_station`
 
 
 
