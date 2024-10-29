@@ -45,10 +45,7 @@ longueur_ope<-ma_station$OPE_LR
 **Longueur station (m)** : `r longueur_ope`  
 
 
-BLBALBLBLBLBLA
-
-
-## QUELQUES GRAPHIQUES
+## CARACTERISTIQUES DE L OPERATION
 
 You can also embed plots, for example:
 

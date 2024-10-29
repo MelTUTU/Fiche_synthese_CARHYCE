@@ -1,6 +1,6 @@
 # REALISATION DE GRAPHIQUES
 
-# ATTENTION : faire tourner script car_gen au préalable
+# ATTENTION : faire tourner script import_donnees au préalable
 
 # charger les librairies utiles
 library(ggplot2)

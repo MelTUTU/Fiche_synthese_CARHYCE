@@ -1,6 +1,6 @@
 # ANALYSE A LA STATION
 
-# ATTENTION : faire tourner script car_gen au préalable
+# ATTENTION : faire tourner script import_donnees au préalable
 
 #calculer la largeur à plein bord moyenne, médiane, min, max
 lpb_analyse<-transect %>% 
@@ -24,5 +24,5 @@ nb_trans<-transect %>%
 
 
 # sélectionner une station
-#ma_station <-ope_recent2 %>% 
-#  filter (OPE_ID=="817")
+ma_station <-ope_recent2 %>% 
+  filter (OPE_ID=="817")
