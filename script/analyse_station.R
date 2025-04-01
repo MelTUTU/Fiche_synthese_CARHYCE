@@ -24,19 +24,34 @@ lpb_analyse<-transect %>%
   summarise(moy_lpb=mean(TRA_LPB),median_lpb=median(TRA_LPB),min_lpb=min(TRA_LPB),max_lpb=max(TRA_LPB))
 
 
-#faire un boxplot de la largeur à plein bord pour une station choisie >> A FINALISER
-
-graph_lpb <-
-  ggplot(data=lpb_analyse, aes(x=TRA_OPE_ID,y=moy_lpb))+
+#représenter graphiquement les valeurs "structurantes" de la station
+graph_lpb1 <-
+  ggplot(data=lpb_analyse, aes(x=moy_lpb,y=TRA_OPE_ID))+
   geom_point(aes(color='coral'))  +
-  geom_segment( aes(x=TRA_OPE_ID, xend=TRA_OPE_ID, y=0, yend=moy_lpb,color='deepskyblue'))
-graph_lpb
+  geom_segment( aes(x=0, xend=moy_lpb, y=TRA_OPE_ID, yend=TRA_OPE_ID,color='deepskyblue'))+
+  ggtitle ("Largeur moyenne à plein bords")+
+  xlab('mètres')
+graph_lpb1
+# faudrait pouvoir rajouter les autres points dessus > je tente une autre option
 
 
-# Plot
-ggplot(data, aes(x=x, y=y)) +
-  geom_point() + 
-  geom_segment( aes(x=x, xend=x, y=0, yend=y))
+# construction d'un nouveau tableau contenant lpb et lm en ligne
+#tableau plus court
+tab_court<-transect %>% 
+  dplyr::select(TRA_ID,TRA_LPB,TRA_L_MOUILLEE)
+
+tab_transfo<-tab_court %>% 
+  pivot_longer(cols=-'TRA_ID',
+               names_to="type",
+               values_to="valeur")%>% 
+
+  # il faudrait rajouter le TRA_ID
+#graphique > marche pas car je n'arrive pas à installer la librairie qu'il faut
+#library(streamgraph)
+#graph_1<-streamgraph(tab_transfo,key='type',value='valeur',date='TRA_ID',
+ #                    width="400px", height="300px")
+
+
 
 #calculer la largeur mouillée moyenne, médiane, min, max
 lm_analyse<-transect %>% 
