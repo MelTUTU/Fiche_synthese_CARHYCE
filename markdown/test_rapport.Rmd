@@ -17,6 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, echo = FALSE}
 load(file="../output/testgraphique.Rdata")
+load(file="../output/testgraphique2.Rdata")
 ```
 
 ## LA STATION
@@ -39,10 +40,12 @@ Vue aérienne : *idem*
 date_operation<-ma_station$OPE_DATE_REALISATION
 id_operation<-ma_station$OPE_ID
 longueur_ope<-ma_station$OPE_LR
+nb_transect<-mon_ope$nb
 ```
 **Date** : `r date_operation`  
 **Identifiant opération** : `r id_operation`  
-**Longueur station (m)** : `r longueur_ope`  
+**Longueur station (m)** : `r longueur_ope`   
+**Nombre de transects réalisés** : `r nb_transect` 
 
 
 ## CARACTERISTIQUES DE L OPERATION
