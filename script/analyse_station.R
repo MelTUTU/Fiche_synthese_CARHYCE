@@ -5,6 +5,8 @@
 #chargement librairie
 library(ggplot2)
 library(wesanderson)
+library(hrbrthemes)# contient des thèmes particuliers
+library(ggthemes) # contient des thèmes particuliers
 
 #Remplacer par NA, directement dans mon tableau, toutes valeurs qui sont inférieures strictement à 0
 transect[transect<0]<-NA
@@ -28,59 +30,46 @@ Hpb_analyse<-transect %>%
 tot_analyse<-dplyr::left_join(lpb_analyse,lm_analyse,by='TRA_OPE_ID')
 tot_analyse<-dplyr::left_join(tot_analyse,Hpb_analyse,by='TRA_OPE_ID')
 
+## Construction d'un graphique représentant les lm et lb moyennes 
+#OPTION A
+# Selection de ces seules variables
+tab_lm_lpb_moy <-tot_analyse %>% 
+  dplyr::select(TRA_OPE_ID,moy_lpb,moy_lm)
+
+# Transformation du tableau pour répartir les colonnes en lignes
+tab_transfo<-tab_lm_lpb_moy %>% 
+  pivot_longer(cols=-'TRA_OPE_ID',
+               names_to="type_largeur",
+               values_to="valeur_largeur")
+
+# Création d'un loolipop permettant de mettre sur un même plan la largeur à plein bord et la largeur mouillée
+
+g_largeur<-ggplot(data=tab_transfo)+
+  geom_point(aes(x=valeur_largeur,y=TRA_OPE_ID,color=type_largeur))+
+  geom_segment(aes(x=0,xend=valeur_largeur,y=TRA_OPE_ID,yend=TRA_OPE_ID),color='blue')
+
+g_largeur  
 
 
-#représenter graphiquement les valeurs "structurantes" de la station : exemple de la largeur à plein bord
-graph_lpb1 <-
-  ggplot(data=lpb_analyse, aes(x=moy_lpb,y=TRA_OPE_ID))+
-  geom_point(aes(color='coral'))  +
-  geom_segment( aes(x=0, xend=moy_lpb, y=TRA_OPE_ID, yend=TRA_OPE_ID,color='deepskyblue'))+
-  ggtitle ("Largeur moyenne à plein bords")+
-  xlab('mètres')
-graph_lpb1
-# faudrait pouvoir rajouter les autres points dessus > je tente une autre option
+#OPTION B : sans créer de tableau plus court et avec infos dans colonnes
+#on crée d'abord les segments et ensuite les points, pour qu'ils soient bien cachés dessous
 
-
-# construction d'un nouveau tableau contenant lpb et lm en ligne
-#tableau plus court
-tab_court<-transect %>% 
-  dplyr::select(TRA_ID,TRA_LPB,TRA_L_MOUILLEE)
-
-tab_transfo<-tab_court %>% 
-  pivot_longer(cols=-'TRA_ID',
-               names_to="type",
-               values_to="valeur")
-
-# il faudrait rajouter le TRA_ID
-#tab_transfo2<-tab_court %>% 
-#  left_join(y=transect$TRA_OPE_ID,by="TRA_ID") marche pas !
-
+g_largeur2 <-ggplot(tot_analyse)+
+  geom_segment(aes(x=0,xend=moy_lpb,y=TRA_OPE_ID,yend=TRA_OPE_ID),col=colors()[128],linetype="dashed")+
+  geom_segment(aes(x=0,xend=moy_lm,y=TRA_OPE_ID,yend=TRA_OPE_ID),col=colors()[128])+
+  geom_point(aes(x=moy_lpb,y=TRA_OPE_ID),col=colors()[94],size=2)+
+  geom_point(aes(x=moy_lm,y=TRA_OPE_ID),col=colors()[128],size=2)+
+  theme_few() +
+  labs(title="Largeur mouillée et largeur à plein bord moyennes par opération Carhyce",
+       subtitle = "Occitanie",
+       x="Largeur en mètres",
+       y="Code opération",
+       caption="Extraction du XX/XX/XX")
  
-graphlpb2<-ggplot(data=tab_transfo)+
-  geom_point(aes(x=valeur,y=TRA_ID,color=type))+
-  geom_segment(aes(x=0,xend=valeur,y=TRA_ID,yend=TRA_ID),color='blue')
-
-graphlpb2  
-
-
-
-# Change baseline
-ggplot(data, aes(x=x, y=y)) +
-  geom_segment( aes(x=x, xend=x, y=1, yend=y), color="grey") +
-  geom_point( color="orange", size=4) +
-  theme_light() +
-  theme(
-    panel.grid.major.x = element_blank(),
-    panel.border = element_blank(),
-    axis.ticks.x = element_blank()
-  ) +
-  xlab("") +
-  ylab("Value of Y")
-
-
   
-  
-  
+g_largeur2
+
+
  
   
   
