@@ -57,9 +57,18 @@ nb_transect<-mon_ope$nb
 plot(figure_geom)
 ```
 
+#### GRANULOMETRIE
+![courbe granulométrique](../data/id_1698_courbe_granulo_2025-07-03.png)
+
+
+#### FACIES ET RIPISYLVE
+![Vue en plan de la station](../data/id_1698_vue_en_plan_2025-07-03.png)
+
 ```{r}
 plot(graphique3)
 ```
+
+
 ```{r stat tableau transect, echo=FALSE}
 summary(transect2)
 ```
@@ -70,9 +79,5 @@ knitr::kable(nb_ope,
 ```{r}
 flextable::flextable(nb_ope)
 ```
-
-
-
-
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
