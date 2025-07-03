@@ -8,7 +8,7 @@ output:
     toc_depth: 3
     toc_float: TRUE
 params:
-  station: '05061942'
+  station: '05096050'
 ---
 
 ```{r setup, include=FALSE}
@@ -53,10 +53,8 @@ nb_transect<-mon_ope$nb
 ### MESURES REALISEES
 #### GEOMETRIE
 
-
-
 ```{r, echo=FALSE}
-plot(g_largeur2_mes_stat)
+plot(figure_geom)
 ```
 
 ```{r}

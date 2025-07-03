@@ -8,6 +8,7 @@ library(wesanderson)
 library(hrbrthemes)# contient des thèmes particuliers
 library(ggthemes) # contient des thèmes particuliers
 library(ggrepel)
+library(gridExtra) # permet de présenter des graphes cote à cote
 
 #Remplacer par NA, directement dans mon tableau, toutes valeurs qui sont inférieures strictement à 0
 transect[transect<0]<-NA
@@ -86,12 +87,13 @@ tot_analyse2<-dplyr::left_join(nb_trans,tot_analyse,by='TRA_OPE_ID')
 
 
 # sélectionner une station
+mon_num=1698
 ma_station <-ope_recent2 %>% 
-  filter (OPE_ID=="817")
+  filter (OPE_ID==mon_num)
 
 #afficher stat sur une seule opé
 mes_stat<-tot_analyse2 %>% 
-  filter(TRA_OPE_ID=="817")
+  filter(TRA_OPE_ID==mon_num)
 
 #faire le graphique sur une seule opé
 #je définie mes couleurs au préalable
@@ -99,13 +101,14 @@ couleur_eau<- colors()[128]
 couleur_terre <- colors()[94]
 couleur_sauge<-colors()[517]
 
+# Lolipop des largeurs : Méthode 1 avec légende à côté
 g_largeur2_mes_stat <-ggplot(mes_stat)+
   geom_segment(aes(x=0,xend=moy_lpb,y=TRA_OPE_ID,yend=TRA_OPE_ID),col=couleur_eau,linetype="dashed")+
   geom_segment(aes(x=0,xend=moy_lm,y=TRA_OPE_ID,yend=TRA_OPE_ID),col=couleur_eau) +
   geom_point(aes(x=moy_lpb,y=TRA_OPE_ID, color = "Largeur à plein bord moyenne"),size=4)+
   geom_point(aes(x=moy_lm,y=TRA_OPE_ID, color = "Largeur mouillée moyenne"),size=4)+
   scale_color_manual(values = c("Largeur à plein bord moyenne" = couleur_terre, #permet d'ajouter la légende et de personnaliser ses couleurs
-                                "Largeur mouillée moyenne" = couleur_eau)) +
+                             "Largeur mouillée moyenne" = couleur_eau)) +
   theme_few() +
   labs(title="Largeurs mouillée et à plein bord moyennes", #ajoute les titres
        subtitle = paste("Opération n°", mes_stat$TRA_OPE_ID),
@@ -122,16 +125,62 @@ g_largeur2_mes_stat <-ggplot(mes_stat)+
 
 g_largeur2_mes_stat
 
+
+# Lolipop des largeurs : Méthode 1 SANS légende à côté
+
+couleur_eau<- colors()[128]
+couleur_terre <- colors()[94]
+
+g_largeur3_mes_stat <-ggplot(mes_stat)+
+  geom_segment(aes(x=0,xend=moy_lpb,y=TRA_OPE_ID,yend=TRA_OPE_ID),col=couleur_eau,linetype="dashed")+
+  geom_segment(aes(x=0,xend=moy_lm,y=TRA_OPE_ID,yend=TRA_OPE_ID),col=couleur_eau) +
+  geom_point(aes(x=moy_lpb,y=TRA_OPE_ID), col = couleur_terre,size=4)+
+  geom_point(aes(x=moy_lm,y=TRA_OPE_ID), col = couleur_eau,size=4)+
+  
+  theme_few() +
+  
+  labs(title="Largeurs mouillée et à plein bord moyennes", #ajoute les titres
+       subtitle = paste("Opération n°", mes_stat$TRA_OPE_ID),
+       x="Largeur en mètres",
+       y=NULL,
+       caption="Extraction du XX/XX/XX")+
+  
+  theme(
+    axis.ticks.y = element_blank(),  # Supprime les tick marks
+    axis.text.y = element_blank(), # Supprime les étiquettes
+    legend.position="none") +  # Supprime la légende  
+ 
+  geom_text_repel(aes(x = moy_lpb, y = TRA_OPE_ID, label = paste("Lpb :", round(moy_lpb,1))), size = 3)+
+  geom_text_repel(aes(x = moy_lm, y = TRA_OPE_ID, label = paste ("Lm : ", round(moy_lm, 1))), size = 3)
+
+g_largeur3_mes_stat
+
+#Lolipop des hauteurs plein bord
+
 g_hauteur_mes_stats<-ggplot(mes_stat)+
   geom_segment(aes(x=TRA_OPE_ID,xend=TRA_OPE_ID,y=0,yend=max_Hpb),col=couleur_sauge)+
   geom_point(aes(x=TRA_OPE_ID,y=max_Hpb),size=5.6,shape = 25,fill=couleur_sauge,color=couleur_sauge)+
-  geom_point(aes(x=TRA_OPE_ID,y=0),size=5.6,shape = 3,fill=couleur_sauge,color=couleur_sauge)+
-  geom_point(aes(x=TRA_OPE_ID,y=median_Hpb),size=5.6,shape = 1,fill=couleur_sauge,color=couleur_sauge)
+  geom_point(aes(x=TRA_OPE_ID,y=0),size=5.6,shape = 3,fill=couleur_sauge,color=couleur_eau)+
+  geom_point(aes(x=TRA_OPE_ID,y=median_Hpb),size=4.6,shape = 21,fill=couleur_sauge,color=couleur_sauge)+
+  scale_color_manual(values = c("Hauteur à plein bord max" = couleur_sauge, #permet d'ajouter la légende et de personnaliser ses couleurs
+                                "Hauteur à plein bord médiane" = couleur_sauge)) +
+  theme_few() +
+  labs(title="Hauteur à plein bord", #ajoute les titres
+       subtitle = paste("Opération n°", mes_stat$TRA_OPE_ID),
+       x=NULL,
+       y="Hauteur en mètres",
+       caption="Extraction du XX/XX/XX")+
+  theme(
+    axis.ticks.x = element_blank(),  # Supprime les tick marks
+    axis.text.x = element_blank())+
+  geom_text_repel(aes(x = TRA_OPE_ID, y = max_Hpb, label = paste("Max : ", round(max_Hpb, 1))), size = 3)+
+  geom_text_repel(aes(x = TRA_OPE_ID, y = median_Hpb, label = paste ("Médiane : ", round(median_Hpb, 1))), size = 3)+
+  geom_text_repel(aes(x=TRA_OPE_ID,y=0,label = "surface de l'eau"), size=3)
+  
 g_hauteur_mes_stats
 
-
-geom_point(data = df_longdist, aes(x = max), size = 5.6, shape = 21, 
-           fill = "grey65", color = "#FFFCFC", stroke = .5)
+# Afficher les graphiques côte à côte
+figure_geom<-grid.arrange(g_largeur3_mes_stat, g_hauteur_mes_stats, ncol=2)
 
 
 
