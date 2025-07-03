@@ -97,6 +97,7 @@ mes_stat<-tot_analyse2 %>%
 #je définie mes couleurs au préalable
 couleur_eau<- colors()[128]
 couleur_terre <- colors()[94]
+couleur_sauge<-colors()[517]
 
 g_largeur2_mes_stat <-ggplot(mes_stat)+
   geom_segment(aes(x=0,xend=moy_lpb,y=TRA_OPE_ID,yend=TRA_OPE_ID),col=couleur_eau,linetype="dashed")+
@@ -119,7 +120,18 @@ g_largeur2_mes_stat <-ggplot(mes_stat)+
   geom_text_repel(aes(x = moy_lm, y = TRA_OPE_ID, label = round(moy_lm, 1)), size = 3)#+
   #annotate("text",x=0,y=mes_stat$TRA_OPE_ID,label="largeur à plein bord",hjust=0,size=3)
 
- g_largeur2_mes_stat
-  
+g_largeur2_mes_stat
+
+g_hauteur_mes_stats<-ggplot(mes_stat)+
+  geom_segment(aes(x=TRA_OPE_ID,xend=TRA_OPE_ID,y=0,yend=max_Hpb),col=couleur_sauge)+
+  geom_point(aes(x=TRA_OPE_ID,y=max_Hpb),size=5.6,shape = 25,fill=couleur_sauge,color=couleur_sauge)+
+  geom_point(aes(x=TRA_OPE_ID,y=0),size=5.6,shape = 3,fill=couleur_sauge,color=couleur_sauge)+
+  geom_point(aes(x=TRA_OPE_ID,y=median_Hpb),size=5.6,shape = 1,fill=couleur_sauge,color=couleur_sauge)
+g_hauteur_mes_stats
+
+
+geom_point(data = df_longdist, aes(x = max), size = 5.6, shape = 21, 
+           fill = "grey65", color = "#FFFCFC", stroke = .5)
+
 
 

@@ -36,6 +36,7 @@ Vue aérienne : *idem*
 
 
 ## L'OPERATION
+### MISE EN OEUVRE DU PROTOCOLE
 ```{r,echo=FALSE}
 date_operation<-ma_station$OPE_DATE_REALISATION
 id_operation<-ma_station$OPE_ID
@@ -44,16 +45,18 @@ nb_transect<-mon_ope$nb
 ```
 **Date** : `r date_operation`  
 **Identifiant opération** : `r id_operation`  
-**Longueur station (m)** : `r longueur_ope`   
-**Nombre de transects réalisés** : `r nb_transect` 
+**Longueur station (m)** : `r longueur_ope`  
+**Distance inter-point (m)** : *à compléter*  
+**Nombre de transects réalisés** : `r nb_transect`   
 
 
-## CARACTERISTIQUES DE L OPERATION
+### MESURES REALISEES
+#### GEOMETRIE
 
-You can also embed plots, for example:
+
 
 ```{r, echo=FALSE}
-plot(pressure)
+plot(g_largeur2_mes_stat)
 ```
 
 ```{r}
